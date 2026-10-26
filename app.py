@@ -48,7 +48,7 @@ def predict():
         img_array = np.array(img, dtype=np.float32)
         img_array = np.expand_dims(img_array, axis=0)
 
-        predicttions = model.predict(img_array, verbose=0)
+        predicttions = model(img_array, training=False).numpy()
         index = int(np.argmax(predicttions[0]))
 
         return jsonify({
