@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าแรก</title>
+<style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: url("{{url_for('static', filename='image.jpg')}}") center / cover no-repeat fixed;
+    }
+
+    .text {
+        background: rgba(255, 255, 255, 0.8);
+        max-width: 600px;
+        margin: 20px ;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+</style>
+
+</head>
+
+<body>
+    <div class="text">
+        <h2>Hello Chilli</h2>
+        <p>ตรวจโรคพริกเบื้องต้น เพียงอัปโหลดรูปใบหรือต้นพริก ระบบ AI จะช่วยวิเคราะห์ว่าเป็นโรคอะไร</p>
+        
+        <h4>วิธีใช้งาน</h4>
+        <ol > 
+            <li>กด "เลือกไฟล์" แล้วเลือกรูปพริกของคุณ</li>
+            <li>กดปุ่ม "ทำนาย"</li>
+            <li>ดูผลลัพธ์ด้านล่าง</li>
+        </ol>
+
+        <h4>คำแนะนำการถ่ายรูป</h4>
+        <ol> 
+            <li>ถ่ายใบหรือผลที่มีอาการผิดปกติให้เห็นชัด</li>
+            <li>ถ่ายในที่แสงสว่างเพียงพอ</li>
+        </ol>
+
+        <p style="color: rgb(221, 65, 65);">หมายเหตุ</p>
+        <small>* ผลการทำนายเป็นการประเมินเบื้องต้นเท่านั้น</small>
+        <br>
+        <a href="/upload">เริ่มใช้งาน</a>
+    </div>
+    
+</body>
+</html>

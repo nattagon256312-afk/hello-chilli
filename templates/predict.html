@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจโรคพริก</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+    }
+
+    .container {
+        background-color: rgb(205, 204, 204);
+        width: 600px;
+        max-width: calc(100% - 60px);
+        min-height: 100vh;
+        box-sizing: border-box;
+
+        padding: 30px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    #image {
+        margin: 15px auto;
+    }
+
+    button {
+        margin: 15px auto;
+    }
+
+    #result {
+        text-align: center;
+    }
+
+    #preview {
+        max-width: 300px;
+        max-height: 300px;
+        margin: 10px auto;
+    }
+
+    .back {
+        text-align: left;
+        margin: 20px;
+    }
+
+</style>
+
+
+<body>
+    <div class="container"> 
+        <h2>Hello Chilli</h2>
+        <input type="file" id="image" accept="image/*">
+        <br>
+        <img id="preview" style="max-width: 300px; display: none;">
+        <br>
+        <button onclick="predict()">ทำนาย</button>
+        <p id="result"></p>
+        <br>
+        <p></p>
+
+
+        <div class="back">
+            <a href="/">หน้าแรก</a>
+        </div>
+    </div>
+
+</body>
+<script>
+
+    document.getElementById("image").addEventListener("change", function () {
+        document.getElementById("result").textContent = "";
+        const file = this.files[0];
+        const preview = document.getElementById("preview");
+
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = "block";
+        } else {
+            preview.style.display = "none";
+        }
+    })
+
+    async function predict () {
+        const file = document.getElementById("image").files[0];
+
+        if (!file) {
+            alert("กรุณาเลือกรูปภาพ");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            body: formData
+        });
+        
+        const data = await response.json();
+
+        if (data.class < 0.2) {
+            document.getElementById("result").textContent = "โปรดเพิ่มภาพที่มีความเกี่ยวข้องหรือชัดมากขึ้น"
+        } else {
+                    document.getElementById("result").textContent = "ผลลัพธ์: " + data.class + " " + "ความมั่นใจ: " + (data.confidence * 100).toFixed(2) + "%";
+        }
+
+
+        
+        
+    }
+
+</script>
+</html>
