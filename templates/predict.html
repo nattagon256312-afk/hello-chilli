@@ -60,7 +60,7 @@
         <br>
         <img id="preview" style="max-width: 300px; display: none;">
         <br>
-        <button onclick="predict()">ทำนาย</button>
+        <button id="predictBtn" onclick="predict()">ทำนาย</button>
         <p id="result"></p>
         <br>
         <p></p>
@@ -95,9 +95,16 @@
             return;
         }
 
+        const btn = document.getElementById("predictBtn");
+        const result = document.getElementById("result");
+
+        btn.style.display = "none";
+        result.textContent = "กำลังประมวลผล";
+
         const formData = new FormData();
         formData.append("image", file);
 
+    try {
         const response = await fetch("/predict", {
             method: "POST",
             body: formData
@@ -105,13 +112,17 @@
         
         const data = await response.json();
 
-        if (data.class < 0.2) {
+        if (data.confidence < 0.2) {
             document.getElementById("result").textContent = "โปรดเพิ่มภาพที่มีความเกี่ยวข้องหรือชัดมากขึ้น"
         } else {
                     document.getElementById("result").textContent = "ผลลัพธ์: " + data.class + " " + "ความมั่นใจ: " + (data.confidence * 100).toFixed(2) + "%";
         }
 
-
+    } catch (err) {
+        result.textContent = "เกิดข้อผิดพลาด ลองใหม่อีกครั้ง";
+    } finally {
+        btn.style.display = "inline-block";
+    }
         
         
     }
